@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <center>
+       E-mail <input id="email" type="email" required>
+        <br><br>
+        Password <input id="password" type="password" required>
+        <br><br>
+        <button onclick="login()">Login</button>
+        <br><br>
+        <button onclick="register()">Register</button>
+        <br><br>
+        <p id="count"></p>
+    </center>
+
+    <script>
+        const email=document.getElementById("email");
+        const password= document.getElementById("password");
+        const count = document.getElementById("count");
+
+        const users=JSON.parse(localStorage.getItem("users")) || [];
+
+
+        const register=()=>{
+            const userMail=email.value;
+            const userPassword=password.value;
+            if(!users.some(user=>user.email===userMail)){
+                users.push({ email: userMail, password: userPassword , loginCount:0 });
+                localStorage.setItem("users",JSON.stringify(users));
+            }else{
+                alert("You have been registered before.")
+            }
+        }
+
+        const login=()=>{
+            let userMail = email.value;
+            const user=users.find(user=>user.email===userMail)
+            if(user){
+                if(user.password===password.value){
+                    user.loginCount +=1
+                    count.innerHTML = user.loginCount;
+                localStorage.setItem("users", JSON.stringify(users));
+                    alert("Success.")
+                }else{
+                    alert("Password is wrong.")
+                }
+            }else{
+                alert("Invalid email or you have not been register.")
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>
