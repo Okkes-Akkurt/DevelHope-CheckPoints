@@ -1,15 +1,21 @@
-import React from 'react'
+import React from 'react';
 
 const FilteredPage = () => {
-const filteredCar = localStorage.getItem('filteredCar')
-    ? JSON.parse(localStorage.getItem('filteredCar'))
-    : [];
-    return <div>{filteredCar.map((car, i) => {
-        <div key={i}>
-            <div>Model: {car.year}</div>
-            <div>Model: {car.mile}</div>
-        </div>;
-  })}</div>;
-}
+    const filteredCar = localStorage.getItem('filteredCar')
+        ? JSON.parse(localStorage.getItem('filteredCar'))
+        : [];
 
-export default FilteredPage
+    return (
+        <div>
+            {filteredCar.map((car, i) => (
+                <ul key={i}>
+                    <li>Model: {car.model}</li>
+                    <li>Year: {car.year}</li>
+                    <li>Mile: {car.mile}</li>
+                </ul>
+            ))}
+        </div>
+    );
+};
+
+export default FilteredPage;

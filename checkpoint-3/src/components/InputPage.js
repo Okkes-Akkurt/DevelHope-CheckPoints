@@ -3,6 +3,9 @@ import {useNavigate} from 'react-router-dom';
 
 const InputPage = () => {
     const [cars, setCars] = useState([]);
+    const [model, setModel] = useState('');
+    const [year, setYear] = useState(0);
+    const [mile, setMile] = useState(0);
     const [inputValue, setInputValue] = useState({
         model: '',
         year: '',
@@ -11,21 +14,15 @@ const InputPage = () => {
 
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setInputValue({
-            [e.target.name]: e.target.value,
-        });
-    };
-
     const handleClick = () => {
-        setCars({...cars, inputValue});
-        localStorage.setItem('cars', JSON.stringify(cars));
+        const carList = [...cars, {model: model, year: year, mile: mile}];
+        setCars(carList);
+        console.log({model: model, year: year, mile: mile});
+        localStorage.setItem('cars', JSON.stringify(carList));
         alert('Added new car.');
-        setInputValue({
-            model: '',
-            year: '',
-            mile: '',
-        });
+        setModel('');
+        setYear(0)
+        setMile(0);
     };
 
     return (
@@ -34,8 +31,8 @@ const InputPage = () => {
             <input
                 type='text'
                 name='model'
-                value={inputValue.model}
-                onChange={handleChange}
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
                 placeholder='model'
             />
             <br />
@@ -43,8 +40,8 @@ const InputPage = () => {
             <input
                 type='text'
                 name='year'
-                value={inputValue.year}
-                onChange={handleChange}
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
                 placeholder='year'
             />
             <br />
@@ -52,8 +49,8 @@ const InputPage = () => {
             <input
                 type='text'
                 name='mile'
-                value={inputValue.mile}
-                onChange={handleChange}
+                value={mile}
+                onChange={(e) => setMile(e.target.value)}
                 placeholder='mile'
             />
             <br />

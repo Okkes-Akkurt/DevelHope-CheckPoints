@@ -2,43 +2,19 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 
 const FilterPage = () => {
-    const cars = localStorage.getItem("cars") ? JSON.parse(localStorage.getItem("cars")) : [];
+    const cars = localStorage.getItem('cars') ? JSON.parse(localStorage.getItem('cars')) : [];
     const [filteredCar, setFilteredCar] = useState([]);
-    const [inputValue, setInputValue] = useState({
-        year: '',
-        mile: '',
-    });
+    const [year, setYear] = useState(0);
+    const [mile, setMile] = useState(0);
 
     const navigate = useNavigate();
 
-    const handleChange = (e) => {
-        setInputValue({
-            [e.target.name]: e.target.value,
-        });
-    };
-
     const handleClick = () => {
-        const filtercar = cars.filter(car => {
-            if (inputValue.year && car.year !== inputValue.year.includes(car.year)) {
-                return false;
-            } else {
-                const filteryear = Number(car.year).sort((a, b) => a - b)
-                if (Number(car.year) > Number(inputValue.year)) {
-                    setFilteredCar(filteryear);
-                }
-            }
-            if (inputValue.mile && car.mile !== inputValue.mile.includes(car.mile)) {
-                return false;
-            } else {
-                const filteryear = Number(car.mile).sort((a, b) => a - b);
-                if (Number(car.mile) < Number(inputValue.mile)) {
-                    setFilteredCar(filteryear);
-                }
-            } ;
-            return true
-
-        })
-        localStorage.setItem('filteredCar', JSON.stringify(filteredCar));
+        const filtercar = cars.filter((car) => {
+            return parseInt(car.year) >= parseInt(year) && parseInt(car.mile) <= parseInt(mile);
+        });
+        setFilteredCar(filtercar);
+        localStorage.setItem('filteredCar', JSON.stringify(filtercar));
         navigate('/result');
     };
     return (
@@ -47,8 +23,8 @@ const FilterPage = () => {
             <input
                 type='text'
                 name='year'
-                value={inputValue.year}
-                onChange={handleChange}
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
                 placeholder='year'
             />
             <br />
@@ -56,13 +32,13 @@ const FilterPage = () => {
             <input
                 type='text'
                 name='mile'
-                value={inputValue.mile}
-                onChange={handleChange}
+                value={mile}
+                onChange={(e) => setMile(e.target.value)}
                 placeholder='mile'
             />
             <br />
             <br />
-            <button onClick={handleClick}>ADD</button>
+            <button onClick={handleClick}>Filter</button>
         </div>
     );
 };
